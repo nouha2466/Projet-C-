@@ -16,15 +16,16 @@ struct Pixel {
     int r, g, b;  
 };
 
---> Cette structure est utilisée pour représenter un pixel d'une image. Chaque pixel est composé de trois valeurs entières correspondant aux composantes rouge, verte et bleue (RGB).
+Cette structure est utilisée pour représenter un pixel d'une image. Chaque pixel est composé de trois valeurs entières correspondant aux composantes rouge, verte et bleue (RGB).
 
 Structure pour représenter un point dans l'espace de Hough
 struct HoughPoint {
     double m, b;
 };
---> Cette structure est utilisée pour représenter un point dans l'espace de Hough, utilisé généralement dans les algorithmes de détection de lignes.
+Cette structure est utilisée pour représenter un point dans l'espace de Hough, utilisé généralement dans les algorithmes de détection de lignes.
 
-// Fonction pour dessiner une droite dans une image PPM
+Fonction pour dessiner une droite dans une image PPM
+
 void dessinerDroite(const std::string& filename, int largeur, int hauteur, double m, double b) {
     std::ofstream imageFile(filename); // Crée un fichier pour l'image PPM
     if (!imageFile) {
@@ -64,7 +65,7 @@ void dessinerDroite(const std::string& filename, int largeur, int hauteur, doubl
 
     imageFile.close(); // Fermer le fichier
 }
---> Cette fonction prend en paramètres un nom de fichier, la largeur et la hauteur de l'image, ainsi que les coefficients m et b d'une droite dans le plan. Elle crée un fichier image au format PPM représentant la droite tracée sur un fond noir
+Cette fonction prend en paramètres un nom de fichier, la largeur et la hauteur de l'image, ainsi que les coefficients m et b d'une droite dans le plan. Elle crée un fichier image au format PPM représentant la droite tracée sur un fond noir
 
 // Fonction pour appliquer la transformation de Hough de manière naïve
 void houghTransformNaive(const std::vector<std::vector<Pixel>>& image) {
@@ -112,7 +113,7 @@ void houghTransformNaive(const std::vector<std::vector<Pixel>>& image) {
     // Maintenant, l'accumulateur contient les votes pour les différentes droites dans l'espace de Hough
     // Vous pouvez procéder à la suite de l'algorithme de détection de droites ici
 }
---> Cette fonction prend en paramètre une image représentée sous forme d'une matrice de pixels. Elle applique la transformation de Hough de manière naïve pour détecter des lignes dans l'image.
+Cette fonction prend en paramètre une image représentée sous forme d'une matrice de pixels. Elle applique la transformation de Hough de manière naïve pour détecter des lignes dans l'image.
 
 int main() {
     // Utilisation des fonctions
@@ -126,7 +127,7 @@ int main() {
     return 0;
 } 
 
---> Cette fonction est le point d'entrée du programme.
+Cette fonction est le point d'entrée du programme.
 Elle appelle la fonction drawLinePPM pour dessiner une droite sur une image PPM.
 Elle appelle la fonction houghTransformNaive avec une image (non initialisée dans cet exemple) pour détecter les lignes.
 
@@ -134,15 +135,15 @@ Elle appelle la fonction houghTransformNaive avec une image (non initialisée da
    2-Transformé de Hough dans l'espace des paramètres (r,θ) qui est un transformé de (m,p) en coordonnées polaires "La méthode moins naive":
 r = x⋅ cosθ + y⋅ sinθ avec θ ∈ [0, 2π[ et r-un réel 
 
---> On essaie de faire la transformation de Hough à l'image "m1projetcpp2.ppm". L'objectif est de trouver les segments de l'image grâce un algorithme qui change chaque pixel du contour en une caractérisation par une droite (p,theta).
+On essaie de faire la transformation de Hough à l'image "m1projetcpp2.ppm". L'objectif est de trouver les segments de l'image grâce un algorithme qui change chaque pixel du contour en une caractérisation par une droite (p,theta).
 
-----> Création de la structure Pixel qui donne la teinte en rouge vert et bleu du pixel
+Création de la structure Pixel qui donne la teinte en rouge vert et bleu du pixel
 
 using namespace std;
 
 struct Pixel {
     int r, g, b;                          
-----> Création d'une classe coordonnées polaires définie par un rho et un theta
+Création d'une classe coordonnées polaires définie par un rho et un theta
 
 class CoordPolaires {
 public:
@@ -150,7 +151,7 @@ public:
 
     CoordPolaires(double t, double r) : theta(t), p(r) {}
 };
-----> fonction qui crée une matrice nulle de taille choisie
+Fonction qui crée une matrice nulle de taille choisie
 
 vector<vector<double>> matrice(int a,int b) {
     const int lignes = a;                                                               
@@ -165,7 +166,7 @@ vector<vector<double>> matrice(int a,int b) {
 
     return matrice;
 }
----- > Fonction qui lit un fichier .ppm
+Fonction qui lit un fichier .ppm
 
 vector<vector<Pixel>> lirePPM(string chemin) {                       
     ifstream fichier(chemin);                                       //ouverture du fichier choisi avec ifstream
@@ -198,7 +199,7 @@ vector<vector<Pixel>> lirePPM(string chemin) {
     fichier.close();                                   //fermeture du fichier
     return matrice;
 }
-----> Création de la classe transformée de Hough
+Création de la classe transformée de Hough
 
 class transformHough {                                       //création de la classe transformée de Hough
 private:
@@ -239,7 +240,7 @@ public:
   }
 
 };
-----> Fonction main
+Fonction main
 
 int main() {
   transformHough TH;
@@ -252,7 +253,7 @@ int main() {
 
   for (int i=0;i<rows;++i){
     for (int j=0;j<cols;++j){
-      if (matriceImage[i][j].r > 0 || matriceImage[i][j].g > 0 || matriceImage[i][j].b > 0){            //pour chaque pixel de l'image , s'il est coloré on le rajoute au contour et on ------> calcule son rho theta
+      if (matriceImage[i][j].r > 0 || matriceImage[i][j].g > 0 || matriceImage[i][j].b > 0){            //pour chaque pixel de l'image , s'il est coloré on le rajoute au contour et on --Calcule son rho theta
         TH.ajoutePoint(i,j);
       }
     }
@@ -270,9 +271,9 @@ int main() {
 
   return 0;
 }
---> On obtient une droite de theta = 135° et un p = 0 qui est alors la droite diagonale descendante de l'image .
+On obtient une droite de theta = 135° et un p = 0 qui est alors la droite diagonale descendante de l'image .
 
------> fonctions supplémentaires implémentées mais non utiles au code ci-dessus
+Fonctions supplémentaires implémentées mais non utiles au code ci-dessus
 
 CoordPolaires convertirEnCP(int a,int b){
   CoordPolaires polaires;
