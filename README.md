@@ -4,12 +4,6 @@ Le but de ce projet est d'écrire un programme dans C++ permettant de détecter 
 
   1-Transformé de Hough dans l'espace des paramètres (m,p) "La méthode naive" avec m - un coefficient directeur et p - une constante sur l'ordonnée (x=0) entre deux points:
 y = m⋅ x + p avec m,p - des réels :
--Explication de code :
-
-#include <iostream>
-#include <vector>
-#include <fstream>
-#include <cmath>
 
 // Structure pour représenter un pixel 
 struct Pixel {
