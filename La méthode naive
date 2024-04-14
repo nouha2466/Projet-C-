@@ -1,0 +1,114 @@
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include <cmath>
+
+// Structure pour représenter un pixel 
+struct Pixel {
+    int r, g, b;  
+};
+
+// Structure pour représenter un point dans l'espace de Hough
+struct HoughPoint {
+    double m, b;
+};
+
+// Fonction pour dessiner une droite dans une image PPM
+void dessinerDroite(const std::string& filename, int largeur, int hauteur, double m, double b) {
+    std::ofstream imageFile(filename); // Crée un fichier pour l'image PPM
+    if (!imageFile) {
+        std::cerr << "Impossible d'ouvrir le fichier pour l'écriture." << std::endl;
+        return;
+    }
+
+    // Entête de l'image PPM
+    imageFile << "P3\n" << largeur << " " << hauteur << "\n255\n";
+
+    // Créer une image noire
+    std::vector<std::vector<Pixel>> image(hauteur, std::vector<Pixel>(largeur, {0, 0, 0}));
+
+    // Déterminer les coordonnées de début et de fin du segment visible de la droite
+    int xA = 0;
+    int yA = m * xA + b;
+
+    int xB = largeur - 1;
+    int yB = m * xB + b;
+
+    // Dessiner la droite en parcourant les colonnes de xA à xB
+    for (int j = xA; j <= xB; j++) {
+        int i = m * j + b; // Calculer la valeur de la ligne correspondante
+        if (i >= 0 && i < hauteur && j >= 0 && j < largeur) {
+            // Assurez-vous que les coordonnées sont dans les limites de l'image
+            image[i][j] = {255, 255, 255}; // Colorier le pixel en blanc
+        }
+    }
+
+    // Écrire les pixels de l'image PPM dans le fichier
+    for (int i = 0; i < hauteur; ++i) {
+        for (int j = 0; j < largeur; ++j) {
+            imageFile << image[i][j].r << " " << image[i][j].g << " " << image[i][j].b << " ";
+        }
+        imageFile << "\n";
+    }
+
+    imageFile.close(); // Fermer le fichier
+}
+
+// Fonction pour appliquer la transformation de Hough de manière naïve
+void houghTransformNaive(const std::vector<std::vector<Pixel>>& image) {
+    // Taille de l'image
+    int largeur = image[0].size();
+    int hauteur = image.size();
+
+    // Résolution de m et b
+    double deltaM = 0.1; // Pas pour les valeurs de m
+    double deltaB = 1.0; // Pas pour les valeurs de b
+
+    // Calculer le nombre de pas pour m et b
+    int numStepsM = static_cast<int>((2.0 / deltaM) + 1);
+    int numStepsB = static_cast<int>((largeur + hauteur) / deltaB + 1);
+
+    // Initialiser l'accumulateur pour l'espace de Hough avec des valeurs nulles
+    std::vector<std::vector<int>> accumulator(numStepsM, std::vector<int>(numStepsB, 0));
+
+    // Parcourir tous les pixels de l'image
+    for (int y = 0; y < hauteur; y++) {
+        for (int x = 0; x < largeur; x++) {
+            // Si le pixel est coloré (par exemple, en utilisant un seuil)
+            if (/* Condition pour détecter les contours */) {
+                // Pour chaque valeur possible de m et b
+                for (int mIndex = 0; mIndex < numStepsM; mIndex++) {
+                    for (int bIndex = 0; bIndex < numStepsB; bIndex++) {
+                        // Calculer les valeurs de m et b correspondantes
+                        double m = -1.0 + mIndex * deltaM;
+                        double b = -largeur / 2.0 + bIndex * deltaB;
+
+                        // Calculer la valeur de b correspondante pour ce pixel
+                        double bExpected = y - m * x;
+
+                        // Si la valeur de b attendue est proche de la valeur de b calculée
+                        if (std::abs(bExpected - b) < deltaB / 2.0) {
+                            // Incrémenter le compteur correspondant dans l'accumulateur de Hough
+                            accumulator[mIndex][bIndex]++;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // Maintenant, l'accumulateur contient les votes pour les différentes droites dans l'espace de Hough
+    // Vous pouvez procéder à la suite de l'algorithme de détection de droites ici
+}
+
+int main() {
+    // Utilisation des fonctions
+    // Exemple d'utilisation de la fonction drawLinePPM
+    drawLinePPM("output.ppm", 800, 600, 1.0, 100.0);
+
+    // Exemple d'utilisation de la fonction houghTransformNaive
+    std::vector<std::vector<Pixel>> image; // Initialisez votre image ici
+    houghTransformNaive(image);
+
+    return 0;
+}
