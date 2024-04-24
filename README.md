@@ -12,13 +12,13 @@ struct Pixel {
 
 Cette structure est utilisée pour représenter un pixel d'une image. Chaque pixel est composé de trois valeurs entières correspondant aux composantes rouge, verte et bleue (RGB).
 
-Structure pour représenter un point dans l'espace de Hough
+//Structure pour représenter un point dans l'espace de Hough
 struct HoughPoint {
     double m, b;
 };
 Cette structure est utilisée pour représenter un point dans l'espace de Hough, utilisé généralement dans les algorithmes de détection de lignes.
 
-Fonction pour dessiner une droite dans une image PPM
+//Fonction pour dessiner une droite dans une image PPM
 
 void dessinerDroite(const std::string& filename, int largeur, int hauteur, double m, double b) {
     std::ofstream imageFile(filename); // Crée un fichier pour l'image PPM
